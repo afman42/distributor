@@ -1,48 +1,75 @@
 <!doctype html>
 <html lang="en">
+
   <head>
+    <title><?= $header ?></title>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title><?= $header; ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="<?php  echo base_url('adminlte/bower_components/bootstrap/dist/css/bootstrap.min.css');?>">
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="<?= base_url(); ?>/tutor-master/fonts/icomoon/style.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/tutor-master/fonts/brand/style.css">
+
+    <link rel="stylesheet" href="<?= base_url(); ?>/tutor-master/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/tutor-master/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/tutor-master/css/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/tutor-master/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/tutor-master/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/tutor-master/css/aos.css">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="<?= base_url(); ?>/tutor-master/css/style.css">
+
   </head>
-  <body>
-    <nav class="navbar navbar-default">
-  <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="<?= base_url().'index.php/welcome/index';?>">Donasi</a>
-    </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-left">
-      <li><a href="<?= base_url('index.php/welcome/berita'); ?>">Berita</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-      <?php if(!empty($_SESSION['level']) && $_SESSION['level'] == 2){ ?>
-        <li><a href="<?= base_url('index.php/welcome/logout'); ?>"><?= $_SESSION['nama']; ?>, Keluar</a></li>
-      <?php }else{ ?>        
-        <li><a href="<?= base_url('index.php/welcome/login'); ?>">Masuk</a></li>
-        <li><a href="<?= base_url('index.php/welcome/daftar'); ?>">Daftar</a></li>
-      <?php } ?>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+  <body>
+
+    
+    <div class="site-wrap" id="home-section">
+
+      <div class="site-mobile-menu site-navbar-target">
+        <div class="site-mobile-menu-header">
+          <div class="site-mobile-menu-close mt-3">
+            <span class="icon-close2 js-menu-toggle"></span>
+          </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+      </div>
+
+      <header class="site-navbar light site-navbar-target" role="banner">
+
+        <div class="container">
+          <div class="row align-items-center position-relative">
+
+            <div class="col-3">
+              <div class="site-logo">
+                <a href="<?= base_url();?>"><strong>Dinos</strong></a>
+              </div>
+            </div>
+
+            <div class="col-9  text-right">
+              
+              <span class="d-inline-block d-lg-none"><a href="#" class=" site-menu-toggle js-menu-toggle py-5 "><span class="icon-menu h3 text-black"></span></a></span>
+
+              <nav class="site-navigation text-right ml-auto d-none d-lg-block" role="navigation">
+                <ul class="site-menu main-menu js-clone-nav ml-auto ">
+                  <li class="active"><a href="<?= base_url(); ?>" class="nav-link">Home</a></li>
+                  <li><a href="<?= site_url('welcome/berita');?>" class="nav-link">Berita</a></li>
+                  <?php if(isset($_SESSION['nama'])){ ?>
+                    <li><a href="<?= site_url('welcome/logout'); ?>" class="nav-link">Logout</a></li>
+                  <?php }else { ?>
+                    <li><a href="<?= site_url('welcome/daftar'); ?>" class="nav-link">Daftar</a></li>
+                    <li><a href="<?= site_url('welcome/login'); ?>" class="nav-link">Masuk</a></li>
+                  <?php } ?>
+                </ul>
+              </nav>
+            </div>
+
+            
+          </div>
+        </div>
+
+      </header>
+
+

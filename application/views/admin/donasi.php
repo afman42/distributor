@@ -31,9 +31,9 @@
                   <th>No</th>
                   <th>Judul</th>
                   <th>Deskripsi</th>
-                  <th>Tanggal Donasi</th>
                   <th>Edit</th>
                   <th>Hapus</th>
+                  <th>Cetak</th>
                 </tr>
               </thead>
               <tbody>
@@ -44,12 +44,12 @@
                   ?>
                 <tr>
                   <td><?= $no;?></td>
-                  <td><?= $data->judul;?></td>
-                  <td><?= $data->deskripsi;?></td>
-                  <td><?= $data->tanggal_donasi;?></td>
+                  <td><?= $data->keterangan;?></td>
+                  <td><img src="<?= base_url().$data->foto;?>" alt="" width="100" height="100"></td>
                   <td><a href="<?= base_url('index.php/admin/edit_donasi/'.$data->id_donasi);?>" class="btn btn-sm btn-warning">Edit</a></td>
                   <td><a href="<?= base_url('index.php/admin/hapus_donasi/'.$data->id_donasi);?>" class="btn btn-sm btn-info">Hapus</a></td>
-                  </tr>
+                  <td><a href="<?= base_url('index.php/admin/cetak_pdf/'.$data->id_donasi);?>" class="btn btn-sm btn-danger">Cetak</a></td>
+                </tr>
                 
                   <?php $no++;} ?>
               </tbody>

@@ -45,10 +45,10 @@
                   ?>
                   <td><?= $no;?></td>
                   <td><?= $data->judul;?></td>
-                  <td><?= $data->deskripsi;?></td>
-                  <td><?= $data->tanggal_update;?></td>
-                  <td><a href="<?= base_url('index.php/admin/edit_berita/'.$data->id_berita);?>" class="btn btn-sm btn-warning">Edit</a></td>
-                  <td><a href="<?= base_url('index.php/admin/hapus_berita/'.$data->id_berita);?>" class="btn btn-sm btn-info">Hapus</a></td>
+                  <td><?= $data->berita;?></td>
+                  <td><?= $data->waktu;?></td>
+                  <td><a href="<?= base_url('index.php/admin/edit_berita/'.$data->id_berita_acara);?>" class="btn btn-sm btn-warning">Edit</a></td>
+                  <td><a href="<?= base_url('index.php/admin/hapus_berita/'.$data->id_berita_acara);?>" class="btn btn-sm btn-info">Hapus</a></td>
                   <?php } ?>
                 </tr>
               </tbody>

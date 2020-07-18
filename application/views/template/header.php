@@ -114,6 +114,7 @@
       <li><a href="<?= base_url('index.php/admin/akun_donatur');?>"><i class="fa fa-user"></i> <span>Akun</span></a></li>
       <li><a href="<?= base_url('index.php/admin/berita');?>"><i class="fa fa-comment-o"></i> <span>Berita</span></a></li>
       <li><a href="<?= base_url('index.php/admin/donasi');?>"><i class="fa fa-heart-o"></i> <span>Donasi</span></a></li>
+      <li><a href="<?= base_url('index.php/admin/bencana');?>"><i class="fa fa-bars"></i> <span>Jenis Bencana</span></a></li>
       <li><a href="<?= base_url('index.php/admin/profil');?>"><i class="fa fa-gears"></i> <span>Edit Profil</span></a></li>
       <li><a href="<?= base_url('index.php/loginadmin/logout');?>"><i class="fa fa-sign-out"></i> <span>Keluar</span></a></li>
         

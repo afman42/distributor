@@ -10,13 +10,12 @@ class M_admin extends CI_Model {
 
     public function tambah_akun_donatur($data)
     {
-        return $this->db->insert('tb_user', $data);
+        return $this->db->insert('tb_donatur', $data);
     }
 
     public function tampil_akun_donatur()
     {
-        $this->db->where('level',2);
-        return $this->db->get('tb_user');
+        return $this->db->get('tb_donatur');
     }
 
     public function tampil_donasi()
@@ -26,19 +25,19 @@ class M_admin extends CI_Model {
 
     public function cek_akun_donatur($id)
     {
-        return $this->db->get_where('tb_user',['id_user' => $id]);
+        return $this->db->get_where('tb_donatur',['id_donatur' => $id]);
     }
 
     public function update_akun_donatur($id,$data)
     {
-        $this->db->where('id_user',$id);
-        return $this->db->update('tb_user',$data);
+        $this->db->where('id_donatur',$id);
+        return $this->db->update('tb_donatur',$data);
     }
 
     public function hapus_akun_donatur($id)
     {
-        $this->db->where('id_user',$id);
-        $this->db->delete('tb_user');
+        $this->db->where('id_donatur',$id);
+        $this->db->delete('tb_donatur');
     }
 
     public function tambah_donasi($data)
@@ -65,28 +64,55 @@ class M_admin extends CI_Model {
 
     public function tampil_berita()
     {
-        return $this->db->get('tb_berita');
+        return $this->db->get('tb_berita_acara');
     }
 
     public function tambah_berita($data)
     {
-        return $this->db->insert('tb_berita',$data);
+        return $this->db->insert('tb_berita_acara',$data);
     }
 
     public function cek_berita($id)
     {
-        return $this->db->get_where('tb_berita',['id_berita' => $id]);
+        return $this->db->get_where('tb_berita_acara',['id_berita_acara' => $id]);
     }
 
     public function update_berita($id,$data)
     {
-        $this->db->where('id_berita',$id);
-        return $this->db->update('tb_berita',$data);
+        $this->db->where('id_berita_acara',$id);
+        return $this->db->update('tb_berita_acara',$data);
     }
 
     public function hapus_berita($id)
     {
-        $this->db->where('id_berita',$id);
-        $this->db->delete('tb_berita');
+        $this->db->where('id_berita_acara',$id);
+        $this->db->delete('tb_berita_acara');
+    }
+
+    public function tampil_bencana()
+    {
+        return $this->db->get('tb_jenis_bencana');
+    }
+
+    public function tambah_bencana($data)
+    {
+        return $this->db->insert('tb_jenis_bencana',$data);
+    }
+
+    public function cek_bencana($id)
+    {
+        return $this->db->get_where('tb_jenis_bencana',['id_jenis_bencana' => $id]);
+    }
+
+    public function update_bencana($id,$data)
+    {
+        $this->db->where('id_jenis_bencana',$id);
+        return $this->db->update('tb_jenis_bencana',$data);
+    }
+
+    public function hapus_bencana($id)
+    {
+        $this->db->where('id_jenis_bencana',$id);
+        $this->db->delete('tb_jenis_bencana');
     }
 }

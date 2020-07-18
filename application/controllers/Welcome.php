@@ -28,13 +28,14 @@ class Welcome extends CI_Controller {
 		if (!$data["berita"]){
 			show_404();
 		}
+		$data['header'] = 'Donasi | Berita';
 		$this->load->view('utama/lihat_berita',$data);
 	}
 
 	public function berita()
 	{	
 		$config['base_url'] = site_url('welcome/berita');
-		$config['total_rows'] = $this->db->count_all('tb_berita');
+		$config['total_rows'] = $this->db->count_all('tb_berita_acara');
 		$config['per_page'] = 5;
 		$config['uri_segment'] = 3;
 		$choice = $config["total_rows"] / $config["per_page"];
@@ -69,7 +70,9 @@ class Welcome extends CI_Controller {
 	protected function tambah_donasi($id)
 	{
 		$post = $this->input->post();
-		$this->form_validation->set_rules('namabarang', 'Barang', 'required');
+		$this->form_validation->set_rules('nama_barang', 'Barang', 'required');
+		$this->form_validation->set_rules('jumlah', 'Jumlah', 'required');
+		$this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
         $this->form_validation->set_message('required','%s masih kosong, silahkan diisi');
         if($this->form_validation->run() == FALSE){
 			$data["donasi"] = $this->M_utama->cek_donasi($id)->row();
@@ -78,10 +81,11 @@ class Welcome extends CI_Controller {
 			$this->load->view('utama/donasi',$data);
         }else {
 			$data = array(
-				'namabarang'=> $post['namabarang'],
+				'nama_barang'=> $post['nama_barang'],
+				'jumlah'=> $post['jumlah'],
+				'keterangan'=> $post['keterangan'],
 				'id_donasi' => $id,
-				'id_user' => $_SESSION['id_user'],
-				'tanggaldikirim' => date('Y-m-d')
+				'id_donatur' => $_SESSION['id_donatur']
 			);
 			$this->M_utama->tambah_masukan_donasi($data);
 			redirect(base_url('index.php/welcome/donasi/'.$id));
@@ -125,16 +129,16 @@ class Welcome extends CI_Controller {
 	public function login()
 	{
 		$post = $this->input->post();
-		$this->form_validation->set_rules('username', 'Username', 'trim|required');
-		$this->form_validation->set_rules('password', 'Password', 'trim|required');
+		$this->form_validation->set_rules('email', 'Email', 'trim|required');
+		$this->form_validation->set_rules('nohp', 'No Handphone', 'trim|required');
 		$this->form_validation->set_message('required','%s masih kosong, silahkan diisi');
         $this->form_validation->set_message('trim','%s diisi tanpa jarak');
-		$username = $this->input->post('username',TRUE);
-		$password = $this->input->post('password',TRUE);
+		$username = $this->input->post('email',TRUE);
+		$password = $this->input->post('nohp',TRUE);
 		$where = array(
-			'username' => $username,
-			'password' => md5($password)
-			);
+			'email' => $username,
+			'nohp' => $password
+		);
 		$cek = $this->M_utama->cek_login($where)->num_rows();
 		$nampil = $this->M_utama->cek_login($where)->row();
 		$url_kembali = base_url('index.php/welcome/login');
@@ -145,11 +149,10 @@ class Welcome extends CI_Controller {
         }else {
 			// var_dump($nampil);
 			if($cek > 0){
-                $_SESSION['username'] = $nampil->username;
-                $_SESSION['id_user'] = $nampil->id_user;
+                // $_SESSION['username'] = $nampil->username;
+                $_SESSION['id_donatur'] = $nampil->id_donatur;
                 $_SESSION['status'] = TRUE;
                 $_SESSION['nama'] = $nampil->nama;
-                $_SESSION['level'] = $nampil->level;
                 echo "<script>alert('Berhasil Login'); window.location='$url_login'</script>";
             }else{
                 echo "<script>alert('Gagal Login'); window.location='$url_kembali'</script>";
@@ -160,23 +163,28 @@ class Welcome extends CI_Controller {
 	public function daftar()
 	{
 		$post = $this->input->post();
-		$this->form_validation->set_rules('username', 'Username', 'trim|required');
-		$this->form_validation->set_rules('password', 'Password', 'trim|required');
+		$this->form_validation->set_rules('email', 'Email', 'trim|required');
+		$this->form_validation->set_rules('nohp', 'No Handphone', 'trim|required');
 		$this->form_validation->set_rules('nama', 'Nama', 'trim|required');
+		$this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
+		$this->form_validation->set_rules('jenis_donatur', 'Jenis Donatur', 'trim|required');
 		$this->form_validation->set_message('required','%s masih kosong, silahkan diisi');
-        $this->form_validation->set_message('trim','%s diisi tanpa jarak');
-		$username = $this->input->post('username',TRUE);
-		$password = $this->input->post('password',TRUE);
+		$this->form_validation->set_message('trim','%s diisi tanpa jarak');
+		$email = $this->input->post('email',TRUE);
+		$nohp = $this->input->post('nohp',TRUE);
 		$nama = $this->input->post('nama',TRUE);
+		$alamat = $this->input->post('alamat',TRUE);
+		$jenis = $this->input->post('jenis_donatur',TRUE);
 		$where = array(
-			'username' => $username,
-			'password' => md5($password)
+			'email' => $email,
+			'nohp' => $nohp
 		);
 		$data = array(
-			'username' => $username,
-			'password' => md5($password),
+			'email' => $email,
+			'nohp' => $nohp,
 			'nama' => $nama,
-			'level' => 2
+			'alamat' => $alamat,
+			'jenis_donatur' => $jenis,
 		);
 		$url_kembali = base_url('index.php/welcome/login');
         $url_login = base_url('index.php/welcome/index');
@@ -188,11 +196,11 @@ class Welcome extends CI_Controller {
 			$cek = $this->M_utama->cek_login($where)->num_rows();
 			$nampil = $this->M_utama->cek_login($where)->row();
 			if($cek > 0){
-                $_SESSION['username'] = $nampil->username;
-                $_SESSION['id_user'] = $nampil->id_user;
+                // $_SESSION['username'] = $nampil->username;
+                $_SESSION['id_donatur'] = $nampil->id_donatur;
                 $_SESSION['status'] = TRUE;
                 $_SESSION['nama'] = $nampil->nama;
-				$_SESSION['level'] = $nampil->level;
+				// $_SESSION['level'] = $nampil->level;
                 echo "<script>alert('Berhasil Daftar'); window.location='$url_login'</script>";
             }else{
                 echo "<script>alert('Gagal Daftar'); window.location='$url_kembali'</script>";

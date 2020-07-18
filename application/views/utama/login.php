@@ -11,12 +11,12 @@
             <div class="panel-body">
                 <form action="<?= base_url('index.php/welcome/login');?>" method="post">
                     <div class="form-group">
-                        <input type="text" name="username" class="form-control" placeholder="Masukan Username">
-                        <?= form_error('username', '<small class="text-danger pl-3">', '</small>'); ?>
+                        <input type="text" name="email" class="form-control" placeholder="Masukan Email">
+                        <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
                     <div class="form-group">
-                        <input type="password" name="password" class="form-control" placeholder="Masukan password">
-                        <?= form_error('password', '<small class="text-danger pl-3">', '</small>'); ?>
+                        <input type="text" name="nohp" class="form-control" placeholder="Masukan No Handphone">
+                        <?= form_error('nohp', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Masuk" class="btn btn-primary">

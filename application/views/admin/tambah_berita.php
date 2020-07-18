@@ -23,20 +23,35 @@
           </div>
         </div>
         <div class="box-body">
+        <?php if (isset($error)) {
+          echo $error;
+        } ?>
           <div class="row">
               <div class="col-md-6">
-                <form action="<?= base_url('index.php/admin/tambah_berita');?>" method="post">
-                    <div class="form-group">
-                        <input type="text" name="judul" class="form-control" placeholder="Silakan Isi Judul">
-                          <?= form_error('judul', '<small class="text-danger pl-3">', '</small>'); ?>
-                    </div>
-                    <div class="form-group">
-                        <textarea name="deskripsi" class="form-control" placeholder="Silakan Isi Deskripsi"></textarea>
-                        <?= form_error('deskripsi', '<small class="text-danger pl-3">', '</small>'); ?>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Simpan" class="btn btn-primary">
-                    </div>
+                <form action="<?= site_url('admin/tambah_beritas');?>" method="post" enctype="multipart/form-data">
+                  <div class="form-group">
+                    <input type="text" name="judul" class="form-control" placeholder="Masukan Judul" required>
+                  </div>
+                  <div class="form-group">
+                    <input type="text" name="tempat" class="form-control" placeholder="Masukan Tempat" required>
+                  </div>
+                  <div class="form-group">
+                    <textarea name="berita" class="form-control" required></textarea>
+                  </div>
+                  <div class="form-group">
+                    <select name="jenis_bencana" class="form-control" required>
+                      <option value="">-- Pilih Jenis Bencana --</option>
+                      <?php foreach ($bencana as $k) {?>
+                        <option value="<?= $k->id_jenis_bencana ?>"><?= $k->nama_bencana ?></option>
+                      <?php } ?>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <input type="file" name="foto" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                  </div>
                 </form>
               </div>
           </div>

@@ -27,12 +27,8 @@
               <div class="col-md-6">
             <?php echo form_open_multipart('admin/tambah_donasi');?>
                     <div class="form-group">
-                        <input type="text" name="judul" class="form-control" placeholder="Silakan Isi Judul">
-                          <?= form_error('judul', '<small class="text-danger pl-3">', '</small>'); ?>
-                    </div>
-                    <div class="form-group">
-                        <textarea name="deskripsi" class="form-control"></textarea>
-                        <?= form_error('deskripsi', '<small class="text-danger pl-3">', '</small>'); ?>
+                        <textarea name="keterangan" class="form-control" placeholder="Masukan Keterangan"></textarea>
+                        <?= form_error('keterangan', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
                     <div class="form-group">
                         <input type="file" name="foto" class="form-control">

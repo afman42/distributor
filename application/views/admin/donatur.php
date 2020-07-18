@@ -30,7 +30,7 @@
                 <tr>
                   <th>No</th>
                   <th>Nama</th>
-                  <th>Username</th>
+                  <th>Email</th>
                   <th>Edit</th>
                   <th>Hapus</th>
                 </tr>
@@ -42,9 +42,9 @@
                   ?>
                   <td><?= $no; ?></td>
                   <td><?= $data->nama; ?></td>
-                  <td><?= $data->username; ?></td>
-                  <td><a href="<?= base_url('index.php/admin/edit_donatur/'.$data->id_user);?>" class="btn btn-sm btn-warning">Edit</a></td>
-                  <td><a href="<?= base_url('index.php/admin/hapus_donatur/'.$data->id_user);?>" class="btn btn-sm btn-info">Hapus</a></td>
+                  <td><?= $data->email; ?></td>
+                  <td><a href="<?= base_url('index.php/admin/edit_donatur/'.$data->id_donatur);?>" class="btn btn-sm btn-warning">Edit</a></td>
+                  <td><a href="<?= base_url('index.php/admin/hapus_donatur/'.$data->id_donatur);?>" class="btn btn-sm btn-info">Hapus</a></td>
                   <?php } ?>
                 </tr>
               </tbody>

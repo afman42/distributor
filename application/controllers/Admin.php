@@ -34,8 +34,11 @@ class Admin extends CI_Controller {
 	public function tambah_akun_donatur()
 	{
 		$post = $this->input->post();
-        $this->form_validation->set_rules('username', 'Username', 'required');
+        $this->form_validation->set_rules('alamat', 'Alamat', 'required');
         $this->form_validation->set_rules('nama', 'Nama', 'required');
+        $this->form_validation->set_rules('nohp', 'No Handphone', 'required');
+        $this->form_validation->set_rules('jenis_donatur', 'Jenis Donatur', 'required');
+        $this->form_validation->set_rules('email', 'Email', 'required');
         $this->form_validation->set_message('required','%s masih kosong, silahkan diisi');
         if($this->form_validation->run() == FALSE){
 			$data['header'] = 'Admin | Akun Donatur';
@@ -44,10 +47,11 @@ class Admin extends CI_Controller {
 			$this->load->view('template/footer');
         }else {
             $data = array(
-                'username' => $post['username'],
+                'jenis_donatur' => $post['jenis_donatur'],
 				'nama' => $post['nama'],
-				'password' => md5('donatur123'),
-				'level' => 2
+				'email' => $post['email'],
+				'alamat' => $post['alamat'],
+				'nohp' => $post['nohp'],
             );
             $this->M_admin->tambah_akun_donatur($data);
             redirect(base_url('index.php/admin/akun_donatur'));
@@ -67,8 +71,11 @@ class Admin extends CI_Controller {
 	protected function update_akun_donatur($id)
 	{
 		$post = $this->input->post();
-        $this->form_validation->set_rules('username', 'Username', 'required');
+        $this->form_validation->set_rules('alamat', 'Alamat', 'required');
         $this->form_validation->set_rules('nama', 'Nama', 'required');
+        $this->form_validation->set_rules('nohp', 'No Handphone', 'required');
+        $this->form_validation->set_rules('jenis_donatur', 'Jenis Donatur', 'required');
+        $this->form_validation->set_rules('email', 'Email', 'required');
         $this->form_validation->set_message('required','%s masih kosong, silahkan diisi');
         $data["akun"] = $this->M_admin->cek_akun_donatur($id)->row();
         if($this->form_validation->run() == FALSE){
@@ -78,8 +85,11 @@ class Admin extends CI_Controller {
 			$this->load->view('template/footer');
         }else {
 			$data = array(
-				'username' => $post['username'],
+				'jenis_donatur' => $post['jenis_donatur'],
 				'nama' => $post['nama'],
+				'email' => $post['email'],
+				'alamat' => $post['alamat'],
+				'nohp' => $post['nohp'],
 			);
 			$this->M_admin->update_akun_donatur($id,$data);
 			redirect(base_url('index.php/admin/akun_donatur'));
@@ -105,8 +115,7 @@ class Admin extends CI_Controller {
 	public function tambah_donasi()
 	{
 		$post = $this->input->post();
-        $this->form_validation->set_rules('judul', 'Judul', 'required');
-        $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required');
+        $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
         $this->form_validation->set_message('required','%s masih kosong, silahkan diisi');
         if($this->form_validation->run() == FALSE){
 			$data['header'] = 'Admin | Donasi';
@@ -126,11 +135,9 @@ class Admin extends CI_Controller {
 				$featured_image = $upload_data['file_name'];
 					// var_dump($featured_image);
 				$data = array(
-					'id_user' => $_SESSION['id_user'],
-					'judul'=> $post['judul'],
-					'deskripsi' => $post['deskripsi'],
-					'tanggal_donasi' => date('Y-m-d'),
-					'foto' => '/uploads/'.$featured_image
+					'keterangan'=> $post['keterangan'],
+					'tanggal' => date('Y-m-d'),
+					'foto' => 'uploads/'.$featured_image
 				);
 				$this->M_admin->tambah_donasi($data);
 				redirect(base_url('index.php/admin/donasi'));
@@ -155,8 +162,7 @@ class Admin extends CI_Controller {
 	protected function update_donasi($id)
 	{
 		$post = $this->input->post();
-		$this->form_validation->set_rules('judul', 'Judul', 'required');
-        $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required');
+        $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
         $this->form_validation->set_message('required','%s masih kosong, silahkan diisi');
         $data["donasi"] = $this->M_admin->cek_donasi($id)->row();
         if($this->form_validation->run() == FALSE){
@@ -177,9 +183,9 @@ class Admin extends CI_Controller {
 				$featured_image = $upload_data['file_name'];
 					// var_dump($featured_image);
 				$data = array(
-					'judul'=> $post['judul'],
-					'deskripsi' => $post['deskripsi'],
-					'foto' => '/uploads/'.$featured_image
+					'keterangan'=> $post['keterangan'],
+					'tanggal' => date('Y-m-d'),
+					'foto' => 'uploads/'.$featured_image
 				);
 				$this->M_admin->update_donasi($id,$data);
 				redirect(base_url('index.php/admin/donasi'));
@@ -206,6 +212,17 @@ class Admin extends CI_Controller {
 		unlink($model->foto);
         $this->M_admin->hapus_donasi($id);
         redirect(base_url('index.php/admin/donasi'));
+	}
+
+	public function cetak_pdf($id=NULL)
+	{
+		$this->load->library('pdfgenerator');
+		$this->load->model('M_utama');
+		$data['masukan']= $this->M_utama->get_masukan_donasi($id)->result();
+ 
+	    $html = $this->load->view('admin/donasi_pdf', $data, true);
+	    
+	    $this->pdfgenerator->generate($html,'contoh');
 	}
 
 	public function profil()
@@ -256,64 +273,181 @@ class Admin extends CI_Controller {
 
 	public function tambah_berita()
 	{
+		$data['header'] = 'Admin | Tambah Berita';
+		$data['bencana'] = $this->M_admin->tampil_bencana()->result();
+		$this->load->view('template/header',$data);
+		$this->load->view('admin/tambah_berita',$data);
+		$this->load->view('template/footer');
+	}
+
+	public function tambah_beritas()
+	{
 		$post = $this->input->post();
-        $this->form_validation->set_rules('judul', 'Judul', 'required');
-        $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required');
+
+			$config['upload_path'] = './uploads/';
+			$config['allowed_types'] = 'jpg|png|jpeg';
+			$config['max_size'] = 1024;
+				// $config['max_width'] = 1024;
+				// $config['max_height'] = 768;
+
+			$this->upload->initialize($config);
+			if ($this->upload->do_upload('foto')){
+				$upload_data = $this->upload->data();
+				$featured_image = $upload_data['file_name'];
+			// 		// var_dump($featured_image);
+			$data = array(
+				'judul'=> $post['judul'],
+				'tempat' => $post['tempat'],
+				'waktu' => date('Y-m-d'),
+				'jenis_bencana' => $post['jenis_bencana'],
+				'berita' => $post['berita'],
+				'id_user' => $_SESSION['id_user'],
+				'foto' => 'uploads/'.$featured_image
+			);
+			$paket = $this->M_admin->tambah_berita($data);
+			$url = site_url('admin/berita');
+			if ($paket) {
+				echo "<script>alert('Berhasil Ditambah');location.href='".$url."'</script>";
+			}else{
+				echo "<script>alert('Gagal Ditambah');location.href='".$url."'</script>";
+			}	
+		}else{
+			$error = array('error' => $this->upload->display_errors());
+			$data['bencana'] = $this->M_admin->tampil_bencana()->result();
+			$data['header'] = 'Admin | Tambah Berita';
+			$this->load->view('template/header',$data);
+			$this->load->view('admin/tambah_berita',$error);
+			$this->load->view('template/footer');
+		}
+	}
+	
+	public function edit_berita($id = null)
+    {
+        if (!isset($id)) redirect('admin/berita');
+        $data["berita"] = $this->M_admin->cek_berita($id)->row();
+		if (!$data["berita"]) show_404();
+		$data['bencana'] = $this->M_admin->tampil_bencana()->result();
+		$data['header'] = 'Admin | Edit Berita';
+		$this->load->view('template/header',$data);
+		$this->load->view("admin/edit_berita", $data);
+		$this->load->view('template/footer');
+    }
+
+    public function update_berita($id='',$data='')
+    {
+        $post = $this->input->post();
+        $config['upload_path'] = './uploads/';
+        $config['allowed_types'] = 'jpg|png|jpeg';
+        $config['max_size'] = 1024;
+        // $config['max_width'] = 1024;
+        // $config['max_height'] = 768;
+		$this->upload->initialize($config);
+        if ($this->upload->do_upload('foto')){
+            $upload_data = $this->upload->data();
+            $featured_image = $upload_data['file_name'];
+            $data = array(
+				'judul'=> $post['judul'],
+				'tempat' => $post['tempat'],
+				'waktu' => date('Y-m-d'),
+				'jenis_bencana' => $post['jenis_bencana'],
+				'berita' => $post['berita'],
+				'id_user' => $_SESSION['id_user'],
+				'foto' => 'uploads/'.$featured_image
+			);
+            $this->M_admin->update_berita($post['id_berita'],$data);
+            redirect(base_url('index.php/admin/berita'));
+        }else if (!$this->upload->do_upload('gambar')){
+            $data = array(
+				'judul'=> $post['judul'],
+				'tempat' => $post['tempat'],
+				'waktu' => date('Y-m-d'),
+				'jenis_bencana' => $post['jenis_bencana'],
+				'berita' => $post['berita'],
+				'id_user' => $_SESSION['id_user']
+			);
+            $this->M_admin->update_berita($post['id_berita'],$data);
+            redirect(base_url('index.php/admin/berita'));
+        }else{
+			$error = array('error' => $this->upload->display_errors());
+			$data['bencana'] = $this->M_admin->tampil_bencana()->result();
+			$data['header'] = 'Admin | Tambah Berita';
+			$this->load->view('template/header',$data);
+			$this->load->view('admin/tambah_berita',$error);
+			$this->load->view('template/footer');
+		}
+    }
+
+    public function hapus_berita($id=null)
+    {
+		if (!isset($id)) show_404();
+		$data = $this->M_admin->cek_berita($id)->row();
+        $this->M_admin->hapus_berita($id);
+		unlink($data->foto);
+		redirect(base_url('index.php/admin/berita'));
+    }
+
+	public function bencana()
+	{
+		$data['header'] = 'Admin | Bencana';
+		$data['bencana'] = $this->M_admin->tampil_bencana()->result();
+		$this->load->view('template/header',$data);
+		$this->load->view('admin/bencana',$data);
+		$this->load->view('template/footer');
+	}
+
+	public function tambah_bencana()
+	{
+		$post = $this->input->post();
+        $this->form_validation->set_rules('nama_bencana', 'Nama Bencana', 'required');
         $this->form_validation->set_message('required','%s masih kosong, silahkan diisi');
         if($this->form_validation->run() == FALSE){
-			$data['header'] = 'Admin | Berita';
+			$data['header'] = 'Admin | Bencana';
 			$this->load->view('template/header',$data);
-			$this->load->view('admin/tambah_berita');
+			$this->load->view('admin/tambah_bencana');
 			$this->load->view('template/footer');
         }else {
 			$data = array(
-				'id_user' => $_SESSION['id_user'],
-				'judul'=> $post['judul'],
-				'deskripsi' => $post['deskripsi'],
-				'tanggal_update' => date('Y-m-d'),
+				'nama_bencana'=> $post['nama_bencana'],
 			);
-			$this->M_admin->tambah_berita($data);
-			redirect(base_url('index.php/admin/berita'));
+			$this->M_admin->tambah_bencana($data);
+			redirect(base_url('index.php/admin/bencana'));
         }
 	}
 
-	public function edit_berita($id=NULL)
+	public function edit_bencana($id=NULL)
 	{
-		if (!isset($id)) redirect('admin/berita');
-        $data["berita"] = $this->M_admin->cek_berita($id)->row();
-		if (!$data["berita"]){
+		if (!isset($id)) redirect('admin/bencana');
+        $data["bencana"] = $this->M_admin->cek_bencana($id)->row();
+		if (!$data["bencana"]){
 			show_404();
 		} 
-		$this->update_berita($id);
+		$this->update_bencana($id);
 	}
 
-	protected function update_berita($id)
+	protected function update_bencana($id)
 	{
 		$post = $this->input->post();
-		$this->form_validation->set_rules('judul', 'Judul', 'required');
-        $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required');
+        $this->form_validation->set_rules('nama_bencana', 'Nama Bencana', 'required');
         $this->form_validation->set_message('required','%s masih kosong, silahkan diisi');
-        $data["berita"] = $this->M_admin->cek_berita($id)->row();
+        $data["bencana"] = $this->M_admin->cek_bencana($id)->row();
         if($this->form_validation->run() == FALSE){
-			$data['header'] = 'Admin | Edit Berita';
+			$data['header'] = 'Admin | Edit Bencana';
 			$this->load->view('template/header',$data);
-			$this->load->view('admin/edit_berita',$data);
+			$this->load->view('admin/edit_bencana',$data);
 			$this->load->view('template/footer');
         }else {
 			$data = array(
-				'judul'=> $post['judul'],
-				'deskripsi' => $post['deskripsi'],
-				'tanggal_update' => date('Y-m-d'),
+				'nama_bencana' => $post['nama_bencana'],
 			);
-			$this->M_admin->update_berita($id,$data);
-			redirect(base_url('index.php/admin/berita'));
+			$this->M_admin->update_bencana($id,$data);
+			redirect(base_url('index.php/admin/bencana'));
 		}
 	}
 
-	public function hapus_berita($id=NULL)
+	public function hapus_bencana($id=NULL)
 	{
 		if (!isset($id)) show_404();
-		$this->M_admin->hapus_berita($id);
-        redirect(base_url('index.php/admin/berita'));
+		$this->M_admin->hapus_bencana($id);
+        redirect(base_url('index.php/admin/bencana'));
 	}
 }

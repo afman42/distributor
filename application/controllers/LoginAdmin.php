@@ -34,7 +34,7 @@ class LoginAdmin extends CI_Controller {
                 $_SESSION['id_user'] = $nampil->id_user;
                 $_SESSION['status'] = TRUE;
                 $_SESSION['nama'] = $nampil->nama;
-                $_SESSION['level'] = $nampil->level;
+                // $_SESSION['level'] = $nampil->level;
                 echo "<script>alert('Berhasil Login'); window.location='$url_login'</script>";
             }else{
                 echo "<script>alert('Gagal Login'); window.location='$url_kembali'</script>";

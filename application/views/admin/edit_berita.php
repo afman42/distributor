@@ -12,7 +12,7 @@
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Tambah Berita</h3>
+          <h3 class="box-title">Edit Berita</h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
@@ -25,19 +25,37 @@
         <div class="box-body">
           <div class="row">
               <div class="col-md-6">
-                <form action="<?= base_url('index.php/admin/edit_berita/'.$berita->id_berita);?>" method="post">
-                    <div class="form-group">
-                        <input type="text" name="judul" class="form-control" value="<?= $berita->judul; ?>" placeholder="Silakan Isi Judul">
-                          <?= form_error('judul', '<small class="text-danger pl-3">', '</small>'); ?>
-                    </div>
-                    <div class="form-group">
-                        <textarea name="deskripsi" class="form-control" placeholder="Silakan Isi Deskripsi"><?= $berita->deskripsi; ?></textarea>
-                        <?= form_error('deskripsi', '<small class="text-danger pl-3">', '</small>'); ?>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Simpan" class="btn btn-primary">
-                    </div>
+                <form action="<?= site_url('admin/update_berita');?>" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="id_berita" value="<?= $berita->id_berita_acara ?>">
+                  <div class="form-group">
+                    <input type="text" name="judul" class="form-control" placeholder="Masukan Judul" value="<?= $berita->judul ?>" required>
+                  </div>
+                  <div class="form-group">
+                    <input type="text" name="tempat" class="form-control" placeholder="Masukan Tempat" value="<?= $berita->tempat ?>" required>
+                  </div>
+                  <div class="form-group">
+                    <textarea name="berita" class="form-control" required placeholder="Masukan Berita"><?= $berita->berita ?></textarea>
+                  </div>
+                  <div class="form-group">
+                    <select name="jenis_bencana" class="form-control" required>
+                      <option value="">-- Pilih Jenis Bencana --</option>
+                      <?php foreach ($bencana as $k) {?>
+                        <option value="<?= $k->id_jenis_bencana ?>" <?php if($berita->jenis_bencana == $k->id_jenis_bencana) echo " selected" ?>><?= $k->nama_bencana ?></option>
+                      <?php } ?>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <input type="file" name="foto" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Ubah</button>
+                  </div>
                 </form>
+              </div>
+              <div class="col-md-6">
+                <?php if(isset($berita)) {?>
+                  <img src="<?= base_url().$berita->foto ?>" width="100" height="100">
+                <?php } ?>
               </div>
           </div>
         </div>
