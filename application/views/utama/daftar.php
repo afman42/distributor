@@ -16,7 +16,8 @@
                     </div>
                     <div class="form-group">
                         <input type="radio" name="jenis_donatur" value="individual">Individual &nbsp;
-                        <input type="radio" name="jenis_donatur" value="organisasi">Organisasi
+                        <input type="radio" name="jenis_donatur" value="organisasi">Organisasi &nbsp;
+                        <input type="radio" name="jenis_donatur" value="instansi">Instansi &nbsp;
                       <?= form_error('jenis_donatur', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
                     <div class="form-group">

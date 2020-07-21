@@ -23,6 +23,15 @@ class M_utama extends CI_Model {
         return $this->db->get();
     }
 
+    function get_donatur($id)
+    {
+        $this->db->select('*');
+        $this->db->where('tb_detail_donasi.id_donasi',$id);
+        $this->db->from('tb_detail_donasi');
+        $this->db->join('tb_donatur', 'tb_donatur.id_donatur = tb_detail_donasi.id_donatur');
+        return $this->db->get();
+    }
+
     function get_masukan_donasi($id)
     {
         $this->db->select('*');
@@ -51,5 +60,18 @@ class M_utama extends CI_Model {
     function get_berita_list($limit, $start){
         $query = $this->db->get('tb_berita_acara', $limit, $start);
         return $query;
+    }
+
+    function get_jenis_bencana($bencana)
+    {
+        $this->db->select('*');
+		$this->db->from('tb_berita_acara');
+		$this->db->like('jenis_bencana',$bencana);
+		return $this->db->get();
+    }
+
+    function tampil_jenis_bencana()
+    {
+        return $this->db->get('tb_jenis_bencana');
     }
 }

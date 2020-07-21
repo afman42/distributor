@@ -26,6 +26,7 @@
                 <tr>
                   <td>No</td>
                   <td>Nama</td>
+                  <td>Jenis Donatur</td>
                   <td>Nama Barang</td>
                   <td>Jumlah</td>
                 </tr>
@@ -34,6 +35,7 @@
                   <tr>
                     <td><?= $no;?></td>
                     <td><?= $k->nama ;?></td>
+                    <td><?= $k->jenis_donatur ?></td>
                     <td><?= $k->nama_barang;?></td>
                     <td><?= $k->jumlah;?></td>
                   </tr>
@@ -70,7 +72,7 @@
               </div>
               <?php }else{?>
               <div class="comment-form-wrap pt-5">
-                  Silakan Login Terlebih dahulu untuk <a href="<?= base_url();?>" class="btn btn-primary">donasi</a> 
+                  Silakan Login Terlebih dahulu untuk <a href="<?= site_url('welcome/login');?>" class="btn btn-primary">donasi</a> 
               </div>
               <?php } ?>
             </div>

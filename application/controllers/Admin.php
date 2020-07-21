@@ -218,8 +218,8 @@ class Admin extends CI_Controller {
 	{
 		$this->load->library('pdfgenerator');
 		$this->load->model('M_utama');
-		$data['masukan']= $this->M_utama->get_masukan_donasi($id)->result();
- 
+		$data['masukan'] = $this->M_utama->get_masukan_donasi($id)->result();
+		$data['donatur'] = $this->M_utama->get_donatur($id)->row();
 	    $html = $this->load->view('admin/donasi_pdf', $data, true);
 	    
 	    $this->pdfgenerator->generate($html,'contoh');

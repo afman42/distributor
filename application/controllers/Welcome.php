@@ -34,6 +34,7 @@ class Welcome extends CI_Controller {
 
 	public function berita()
 	{	
+		$data['bencana'] = $this->M_utama->tampil_jenis_bencana()->result();
 		$config['base_url'] = site_url('welcome/berita');
 		$config['total_rows'] = $this->db->count_all('tb_berita_acara');
 		$config['per_page'] = 5;
@@ -206,6 +207,14 @@ class Welcome extends CI_Controller {
                 echo "<script>alert('Gagal Daftar'); window.location='$url_kembali'</script>";
             }
 		}
+	}
+
+	public function jenis_bencana()
+	{
+		$bencana = $this->input->get('jenis_bencana');
+		$data['berita'] = $this->M_utama->get_jenis_bencana($bencana)->result();
+		$data['bencana'] = $this->M_utama->tampil_jenis_bencana()->result();
+		$this->load->view('utama/jenis_bencana',$data);
 	}
 
 	public function logout()

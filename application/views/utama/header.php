@@ -44,7 +44,7 @@
 
             <div class="col-3">
               <div class="site-logo">
-                <a href="<?= base_url();?>"><strong>Dinos</strong></a>
+                <a href="<?= base_url();?>"><strong>Dinsos Berdonasi</strong></a>
               </div>
             </div>
 
