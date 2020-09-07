@@ -21,6 +21,17 @@ class Welcome extends CI_Controller {
 		$this->tambah_donasi($id);
 	}
 
+	public function cetak_pdf($id=NULL)
+	{
+		$this->load->library('pdfgenerator');
+		$this->load->model('M_utama');
+		$data['masukan'] = $this->M_utama->get_masukan_donasi($id)->result();
+		$data['donatur'] = $this->M_utama->get_donatur($id)->row();
+	    $html = $this->load->view('admin/donasi_pdf', $data, true);
+	    
+	    $this->pdfgenerator->generate($html,'donasi');
+	}
+
 	public function lihat_berita($id=NULL)
 	{
 		if (!isset($id)) redirect('welcome/berita');
@@ -169,6 +180,7 @@ class Welcome extends CI_Controller {
 		$this->form_validation->set_rules('nama', 'Nama', 'trim|required');
 		$this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
 		$this->form_validation->set_rules('jenis_donatur', 'Jenis Donatur', 'trim|required');
+		// $this->form_validation->set_rules('nama_gedung', 'Nama Gedung', 'trim|required');
 		$this->form_validation->set_message('required','%s masih kosong, silahkan diisi');
 		$this->form_validation->set_message('trim','%s diisi tanpa jarak');
 		$email = $this->input->post('email',TRUE);
@@ -176,6 +188,7 @@ class Welcome extends CI_Controller {
 		$nama = $this->input->post('nama',TRUE);
 		$alamat = $this->input->post('alamat',TRUE);
 		$jenis = $this->input->post('jenis_donatur',TRUE);
+		$gedung = $this->input->post('nama_gedung',TRUE);
 		$where = array(
 			'email' => $email,
 			'nohp' => $nohp
@@ -186,6 +199,7 @@ class Welcome extends CI_Controller {
 			'nama' => $nama,
 			'alamat' => $alamat,
 			'jenis_donatur' => $jenis,
+			'nama_gedung' => $gedung,
 		);
 		$url_kembali = base_url('index.php/welcome/login');
         $url_login = base_url('index.php/welcome/index');

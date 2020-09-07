@@ -29,6 +29,7 @@
                   <td>Jenis Donatur</td>
                   <td>Nama Barang</td>
                   <td>Jumlah</td>
+                  <td>PDF</td>
                 </tr>
                 <?php if (!empty($masukan)) {?>
                 <?php $no=1; foreach ($masukan as $k) {?>
@@ -38,6 +39,11 @@
                     <td><?= $k->jenis_donatur ?></td>
                     <td><?= $k->nama_barang;?></td>
                     <td><?= $k->jumlah;?></td>
+                    <td>
+                      <?php if (!empty($_SESSION['id_donatur']) && $k->id_donatur == $_SESSION['id_donatur']) {?>
+                        <a href="<?= base_url('index.php/admin/cetak_pdf/'.$k->id_donasi);?>" class="btn btn-sm btn-danger">Cetak</a>
+                      <?php } ?>
+                    </td>
                   </tr>
                 <?php $no++;}}else{ ?>
                   <tr>

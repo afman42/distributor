@@ -21,6 +21,9 @@
                       <?= form_error('jenis_donatur', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
                     <div class="form-group">
+                        <input type="text" name="nama_gedung" class="form-control" placeholder="Masukan Nama Gedung">
+                    </div>
+                    <div class="form-group">
                         <input type="email" name="email" class="form-control" placeholder="Masukan Email">
                         <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>

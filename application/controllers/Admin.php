@@ -222,7 +222,7 @@ class Admin extends CI_Controller {
 		$data['donatur'] = $this->M_utama->get_donatur($id)->row();
 	    $html = $this->load->view('admin/donasi_pdf', $data, true);
 	    
-	    $this->pdfgenerator->generate($html,'contoh');
+	    $this->pdfgenerator->generate($html,'donasi');
 	}
 
 	public function profil()

@@ -19,7 +19,7 @@ class LoginAdmin extends CI_Controller {
 		$password = $this->input->post('password',TRUE);
 		$where = array(
 			'username' => $username,
-			'password' => md5($password)
+			'password' => $password
 			);
 		$cek = $this->M_admin->cek_login($where)->num_rows();
         $nampil = $this->M_admin->cek_login($where)->row();
